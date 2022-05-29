@@ -45,24 +45,3 @@ CREATE TABLE public.produto (
   FOREIGN KEY (id_categoria) REFERENCES public.categoria(id_categoria)
 );
 ```
-
-## Conceitos e recursos utilizados na aplicação
-
-- Tratamento de recursividade infinita;
-- Tratamento de exceções (de forma global);
-- Validação de dados;
-- Documentação com Springdoc;
-- Uso de DTO/VO para transição de dados;
-- Consumo de API externa;
-
-## Configurando a API para execução
-
-As credenciais para acesso ao banco de dados e o nome do contexto da API deverão ser alterados no arquivo application.properties
-
-## Sobre
-
-- Author - [Alexandre Paixão]
-
-## Licença
-
-GNU GPL
