@@ -2,7 +2,7 @@ package com.residencia.comercio.dtos;
 
 public class CadastroEmpresaReceitaDTO {
 
-	private String situação;
+	private String situacao;
 	private String tipo;
 	private String nome;
 	private String porte;
@@ -24,11 +24,11 @@ public class CadastroEmpresaReceitaDTO {
 	private String municipio;
 	private String uf;
 	
-	public String getSituação() {
-		return situação;
+	public String getSituacao() {
+		return situacao;
 	}
-	public void setSituação(String situação) {
-		this.situação = situação;
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
 	}
 	public String getTipo() {
 		return tipo;
@@ -152,7 +152,7 @@ public class CadastroEmpresaReceitaDTO {
 	}
 	@Override
 	public String toString() {
-		return "CadastroEmpresaReceitaDTO Situação:" + situação + ", tipo:" + tipo + ", nome:" + nome + ", porte:"
+		return "CadastroEmpresaReceitaDTO Situação:" + situacao + ", tipo:" + tipo + ", nome:" + nome + ", porte:"
 				+ porte + ", abertura:" + abertura + ", data_situacao:" + data_situacao + ", motivo_situacao="
 				+ motivo_situacao + ", telefone:" + telefone + ", email:" + email + ", natureza_juridica:"
 				+ natureza_juridica + ", cnpj:" + cnpj + ", ultima_atualizacao:" + ultima_atualizacao + ", status:"

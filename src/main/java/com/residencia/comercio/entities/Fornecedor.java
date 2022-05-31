@@ -64,7 +64,7 @@ public class Fornecedor {
 	@Column(name = "nome_fantasia")
 	private String nomeFantasia;
 	
-	@NotBlank(message = "O Status Situação do produto não pode estar vazio")
+	
 	@Column(name = "status_situacao")
 	private String statusSituacao;
 	
@@ -77,9 +77,8 @@ public class Fornecedor {
 	private String logradouro;
 	
 	@Column(name = "numero")
-	private Integer numero;
+	private String numero;
 	
-	@NotBlank(message = "O Complemento do produto não pode estar vazio")
 	@Column(name = "complemento")
 	private String complemento;
 	
@@ -185,11 +184,11 @@ public class Fornecedor {
 		this.logradouro = logradouro;
 	}
 
-	public Integer getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(Integer numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 

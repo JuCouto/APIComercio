@@ -12,6 +12,9 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.residencia.comercio.dtos.CategoriaDTO;
+import com.residencia.comercio.dtos.FornecedorDTO;
+import com.residencia.comercio.dtos.ProdutoDTO;
 
 @Entity
 @Table(name = "produto")
@@ -83,5 +86,30 @@ public class Produto {
 		return "Produto [IdProduto=" + IdProduto + ", sku=" + sku + ", nomeProduto=" + nomeProduto + ", fornecedor="
 				+ fornecedor + ", categoria=" + categoria + "]";
 	}
+
+	public Produto(Integer idProduto, @NotBlank(message = "O sku não deve estar vazio") String sku,
+			@NotBlank(message = "O Nome do produto não pode estar vazio") String nomeProduto, Fornecedor fornecedor,
+			Categoria categoria) {
+		super();
+		IdProduto = idProduto;
+		this.sku = sku;
+		this.nomeProduto = nomeProduto;
+		this.fornecedor = fornecedor;
+		this.categoria = categoria;
+	}
+
+	public Produto() {
+	
+	}
+
+	public ProdutoDTO converteParaDTO() {
+		FornecedorDTO fornecedor = new FornecedorDTO();
+		fornecedor.setIdFornecedor(this.fornecedor.getIdFornecedor());
+		CategoriaDTO categoria = new CategoriaDTO();
+		categoria.setIdCategoria(this.categoria.getIdCategoria());
+		return new ProdutoDTO(IdProduto, sku, nomeProduto, fornecedor, categoria);
+	}
+	
+
 
 }

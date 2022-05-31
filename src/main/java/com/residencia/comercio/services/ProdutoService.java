@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.residencia.comercio.dtos.ProdutoDTO;
 import com.residencia.comercio.entities.Produto;
 import com.residencia.comercio.repositories.ProdutoRepository;
 
@@ -24,6 +25,10 @@ public class ProdutoService {
 	public Produto saveProduto(Produto produto) {
 		return produtoRepository.save(produto);
 	}
+	public ProdutoDTO saveProdutoDTO(ProdutoDTO produtoDTO) {
+		Produto produto = produtoRepository.save(produtoDTO.converteProdutoParaEntidade());
+		return produto.converteParaDTO();
+	}
 	
 	public Produto updateProduto(Produto produto) {
 		return produtoRepository.save(produto);
@@ -37,15 +42,18 @@ public class ProdutoService {
 			produtoBD.setSku(produto.getSku());
 			produtoBD.setFornecedor(produto.getFornecedor());
 			produtoBD.setCategoria(produto.getCategoria());
+			produtoBD.setNomeProduto(produto.getNomeProduto());
 			produtoAtualizado = produtoRepository.save(produtoBD);
 		}
 		
 		return produtoAtualizado;
 	}
 	
-	public void delete(Produto produto) {
-		produtoRepository.delete(produto);
-	}
+	/*
+	 * public void delete(Produto produto) { Produto inst =
+	 * produtoRepository.findById(produto.getIdProduto()).get();
+	 * produtoRepository.delete(inst); }
+	 */
 	
 	public void deleteProdutoId(Integer id) {
 		Produto inst = produtoRepository.findById(id).get();

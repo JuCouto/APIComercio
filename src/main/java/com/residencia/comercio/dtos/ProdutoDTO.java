@@ -1,10 +1,22 @@
 package com.residencia.comercio.dtos;
 
+import javax.validation.constraints.NotBlank;
+
+import com.residencia.comercio.entities.Categoria;
+import com.residencia.comercio.entities.Fornecedor;
+import com.residencia.comercio.entities.Produto;
+
 public class ProdutoDTO {
 	private Integer idProduto;
+	
+	@NotBlank(message = "O sku não deve estar vazio")
 	private String sku;
+	
+	@NotBlank(message = "O Nome do produto não pode estar vazio")
 	private String nomeProduto;
+	
 	private FornecedorDTO fornecedorDTO;
+	
 	private CategoriaDTO categoriaDTO;
 
 	@Override
@@ -51,6 +63,30 @@ public class ProdutoDTO {
 
 	public void setCategoriaDTO(CategoriaDTO categoriaDTO) {
 		this.categoriaDTO = categoriaDTO;
+	}
+
+	public ProdutoDTO(Integer idProduto, @NotBlank(message = "O sku não deve estar vazio") String sku,
+			@NotBlank(message = "O Nome do produto não pode estar vazio") String nomeProduto,
+			FornecedorDTO fornecedorDTO, CategoriaDTO categoriaDTO) {
+		super();
+		this.idProduto = idProduto;
+		this.sku = sku;
+		this.nomeProduto = nomeProduto;
+		this.fornecedorDTO = fornecedorDTO;
+		this.categoriaDTO = categoriaDTO;
+	}
+
+	public ProdutoDTO() {
+	}
+	
+	public Produto converteProdutoParaEntidade() {
+		Fornecedor fornecedor = new Fornecedor();
+		fornecedor.setIdFornecedor(fornecedorDTO.getIdFornecedor());
+		Categoria categoria = new Categoria();
+		categoria.setIdCategoria(categoriaDTO.getIdCategoria());
+		
+		return new Produto(idProduto, sku, nomeProduto,fornecedor, categoria);
+		
 	}
 
 }

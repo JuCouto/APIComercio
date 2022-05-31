@@ -124,29 +124,30 @@ public class FornecedorService {
 		return receitaWsDadosCepVO;
 	}
 	
-	public Fornecedor fornecedorCnpj(String cnpj) throws ParseException {
-		CadastroEmpresaReceitaDTO cert = consultarDadosPorCnpj(cnpj);
-		Fornecedor fornecedorCnpj = new Fornecedor();
+	public Fornecedor fornecedorCnpj(String cer) throws ParseException {
+        CadastroEmpresaReceitaDTO cert = consultarDadosPorCnpj(cer);
+        Fornecedor fornecedorCnpj = new Fornecedor();
 
-		fornecedorCnpj.setBairro(cert.getBairro());
-		fornecedorCnpj.setCep(cert.getCep());
-		fornecedorCnpj.setComplemento(cert.getComplemento());
-		fornecedorCnpj.setCnpj(cert.getCnpj());
-		fornecedorCnpj.setEmail(cert.getEmail());
-		fornecedorCnpj.setLogradouro(cert.getLogradouro());
-		fornecedorCnpj.setMunicipio(cert.getMunicipio());
-		fornecedorCnpj.setNomeFantasia(cert.getFantasia());
-		fornecedorCnpj.setStatusSituacao(cert.getSituação());
-		fornecedorCnpj.setTipo(cert.getTipo());
-		fornecedorCnpj.setTelefone(cert.getTelefone());
-		fornecedorCnpj.setRazaoSocial(cert.getNome());
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		Date dataFormatada = formato.parse(cert.getAbertura());
-		fornecedorCnpj.setDataAbertura(dataFormatada);
-		fornecedorCnpj.setUf(cert.getUf());
+        fornecedorCnpj.setBairro(cert.getBairro());
+        fornecedorCnpj.setCep(cert.getCep());
+        fornecedorCnpj.setComplemento(cert.getComplemento());
+        fornecedorCnpj.setCnpj(cert.getCnpj());
+        fornecedorCnpj.setEmail(cert.getEmail());
+        fornecedorCnpj.setLogradouro(cert.getLogradouro());
+        fornecedorCnpj.setMunicipio(cert.getMunicipio());
+        fornecedorCnpj.setNomeFantasia(cert.getFantasia());
+        fornecedorCnpj.setStatusSituacao(cert.getSituacao());
+        fornecedorCnpj.setTipo(cert.getTipo());
+        fornecedorCnpj.setTelefone(cert.getTelefone());
+        fornecedorCnpj.setRazaoSocial(cert.getNome());
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy"); 
+        Date dataFormatada = formato.parse(cert.getAbertura()); 
+        fornecedorCnpj.setDataAbertura(dataFormatada);
+        fornecedorCnpj.setUf(cert.getUf());
+        fornecedorCnpj.setNumero(cert.getNumero());
 
-		return fornecedorCnpj;
-	}
+        return fornecedorCnpj;
+    }
 	
 	public Fornecedor fornecedorCep(String cep) {
 		CadastroCepDTO cert = consultarCep(cep);

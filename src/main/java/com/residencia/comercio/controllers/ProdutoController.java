@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import com.residencia.comercio.services.ProdutoService;
 
 @RestController
 @RequestMapping("/produto")
+@Validated
 public class ProdutoController {
 	@Autowired
 	ProdutoService produtoService;
@@ -61,6 +63,22 @@ public class ProdutoController {
 		return new ResponseEntity<>(produtoService.saveProduto(produto), HttpStatus.CREATED);
 	}
 	
+	@GetMapping("/query")
+	public ResponseEntity<Produto> findByIdQuery(
+			@RequestParam
+			@NotBlank(message = "O sku deve ser preenchido.")
+			String sku){
+		return new ResponseEntity<>(null, HttpStatus.CONTINUE);
+	}
+	
+	@GetMapping("/request")
+	public ResponseEntity<Produto> findByIdRequest2(
+			@RequestParam
+			@NotBlank(message = "O id deve ser preenchido.")
+			Integer id){
+		return new ResponseEntity<>(null, HttpStatus.CONTINUE);
+	}
+	
 	@PostMapping("/dto")
     public ResponseEntity<ProdutoDTO> saveDTO(@RequestBody ProdutoDTO produtoDTO) {
         ProdutoDTO novoProdutoDTO = produtoService.saveProdutoDTO(produtoDTO);
@@ -82,16 +100,16 @@ public class ProdutoController {
 			return new ResponseEntity<>(produtoAtualizado, HttpStatus.OK);
 	}
 
-	@DeleteMapping
-	public ResponseEntity<String> delete(Produto produto) {
-		produtoService.delete(produto);
-		return new ResponseEntity<>("", HttpStatus.OK);
-	}
+	/*
+	 * @DeleteMapping public ResponseEntity<String> delete(@RequestBody Produto
+	 * produto) { produtoService.delete(produto); return new ResponseEntity<>("",
+	 * HttpStatus.NO_CONTENT); }
+	 */
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteProdutoId(Integer id) {
+	public ResponseEntity<String> deleteProdutoId(@PathVariable Integer id) {
 		produtoService.deleteProdutoId(id);
-		return new ResponseEntity<>("", HttpStatus.OK);
+		return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
 	}
 
 }

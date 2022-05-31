@@ -1,14 +1,9 @@
 package com.residencia.comercio.services;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,8 +17,16 @@ public class CategoriaService {
 	@Autowired
 	CategoriaRepository categoriaRepository;
 	
-	@Value("${pasta.arquivos.imagem}")
-	private String diretorio;
+	@Autowired
+	ArquivoService arquivoService;
+	
+	@Autowired
+	MailService emailService;
+	
+	/*exemplo de criar pasta de imagens
+	 * @Value("${pasta.arquivos.imagem}")
+	 *  private String diretorio;
+	 */
 	
 	public List<Categoria> findAllCategoria(){
 		return categoriaRepository.findAll();
@@ -54,6 +57,7 @@ public class CategoriaService {
 		Categoria categoria = new Categoria();
 		
 		categoria.setIdCategoria(categoriaDTO.getIdCategoria());
+		categoria.setNomeCategoria(categoriaDTO.getNomeCategoria());
 		Categoria novoCategoria = categoriaRepository.save(categoria);
 		
 		return converterEntidadeParaDto(novoCategoria);
@@ -86,24 +90,44 @@ public class CategoriaService {
 		return categoriaDTO;
 	}
 	
-	public Categoria saveCategoriaComFoto(String diretorio, MultipartFile file) {
-		Path diretorioPath = Paths.get(this.diretorio, diretorio);
-		Path arquivoPath = diretorioPath.resolve(file.getOriginalFilename());
-		
-		//categoriaRepository.findByNomeImagem(String nome);
-		
-		Categoria categoriaConvertida = new Categoria();
-		try {
-			Files.createDirectories(diretorioPath);
-			file.transferTo(arquivoPath.toFile());
-			//ObjectMapper objMapper = new ObjectMapper();
-			//categoriaConvertida = objMapper.readValue(categoriaString, Categoria.class);
-		} catch (IOException e) {
-			System.out.println("Ocorreu um erro na conversão");
-		}
-		categoriaConvertida.setNomeImagem(arquivoPath.toString());
-		categoriaConvertida.setNomeCategoria(diretorio);
-		
-		return categoriaRepository.save(categoriaConvertida);
-	}
+	public Categoria saveCategoriaComFoto(String categoriaString, MultipartFile file) throws Exception {
+        Categoria categoriaConvertida = new Categoria();
+        try {
+            ObjectMapper objMapper = new ObjectMapper();
+            categoriaConvertida = objMapper.readValue(categoriaString, Categoria.class);
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro na gravação");
+        }
+        Categoria categoriaBD = categoriaRepository.save(categoriaConvertida);
+        categoriaBD.setNomeImagem(categoriaBD.getIdCategoria() + "" + file.getOriginalFilename());
+        Categoria categoriaAtualizada = categoriaRepository.save(categoriaBD);
+
+        try {
+            arquivoService.criarArquivo(categoriaBD.getIdCategoria() + "" + file.getOriginalFilename(), file);
+        } catch (Exception e) {
+            throw new Exception("Ocorreu um erro ao tentar copiar o arquivo. - " + e.getStackTrace());
+        }
+
+        //"cuidado para definir um destinatário válido"
+		String corpoEmail = "Foi cadastrada uma categoria" + categoriaAtualizada.toString();
+		emailService.enviarEmailTexto("juliana.couto@aluno.senai.br", "Cadastro da Categoria", corpoEmail);
+        return categoriaAtualizada;
+    }
+		/* Código antigo
+		 * Categoria categoriaConvertida = new Categoria();
+		 *  try {
+		 * Files.createDirectories(diretorioPath);
+		 * file.transferTo(arquivoPath.toFile());
+		 * 
+		 * } catch (IOException e) { Path diretorioPath = Paths.get(this.diretorio,
+		 * diretorio); 
+		 * Path arquivoPath =
+		 * diretorioPath.resolve(file.getOriginalFilename());
+		 * System.out.println("Ocorreu um erro ao tentar criar o arquivo"); }
+		 * categoriaConvertida.setNomeImagem(arquivoPath.toString());
+		 * categoriaConvertida.setNomeCategoria(diretorio);
+		 * 
+		 * return categoriaRepository.save(categoriaConvertida);
+		 */
+	
 }
